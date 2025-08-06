@@ -1,29 +1,36 @@
 pipeline {
     agent any
-    
+
     tools {
         nodejs "nodejs"
     }
 
     stages {
-        stage("install") {
+        stage("Install Dependencies") {
             steps {
                 sh 'npm install'
             }
         }
-        stage("build") {
+
+        stage("Build App") {
             steps {
                 sh 'npm run build'
             }
         }
-    } 
-    
+
+        stage("Start Server") {
+            steps {
+                sh 'nohup npm run start &'
+            }
+        }
+    }
+
     post {
         success {
-            echo "SUCCESSFUL"
+            echo "✅ BUILD & RUN SUCCESSFUL"
         }
         failure {
-            echo "FAILED"
+            echo "❌ BUILD FAILED"
         }
     }
 }
